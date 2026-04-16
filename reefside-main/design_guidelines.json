@@ -1,0 +1,64 @@
+{
+  "project_name": "8-Bit Underwater Retro Arcade",
+  "theme": "Dark",
+  "archetype": "7 (Electric & Neon - Adapted for 8-Bit Retro Game)",
+  "typography": {
+    "heading_font": "\"Press Start 2P\", monospace",
+    "body_font": "\"Press Start 2P\", monospace",
+    "notes": "Use 'Press Start 2P' from Google Fonts for authentic retro 8-bit styling across all HUD and menu elements."
+  },
+  "colors": {
+    "background": "#0B1021",
+    "surface": "#0000A8",
+    "primary": "#E45C10",
+    "secondary": "#F8B800",
+    "accent": "#00E8D8",
+    "text_primary": "#FFFFFF",
+    "danger": "#D82800",
+    "success": "#00A800",
+    "enemy_squid": "#FC9838",
+    "enemy_fish": "#E80000",
+    "hero_diver": "#F8D870"
+  },
+  "layout": {
+    "game_container": "max-w-4xl mx-auto border-4 border-white shadow-[0_0_20px_rgba(0,232,216,0.5)] rounded-lg relative overflow-hidden bg-background",
+    "canvas_resolution": {
+      "width": 800,
+      "height": 600
+    },
+    "hud": "absolute top-0 left-0 w-full p-6 flex justify-between items-start text-white text-xl z-10 font-['Press_Start_2P'] drop-shadow-[2px_2px_0px_#000]"
+  },
+  "visual_effects": {
+    "crt_scanlines": "MANDATORY: Overlay the canvas with a scanline effect. Add a pointer-events-none absolute div over the canvas. Use CSS background: linear-gradient(rgba(18,16,16,0) 50%, rgba(0,0,0,0.25) 50%) and background-size: 100% 4px.",
+    "pixelation": "Set ctx.imageSmoothingEnabled = false on the canvas context so any drawn images or rects stay sharp and blocky.",
+    "text_shadow": "All UI text over the canvas must have a sharp 2px 2px 0px #000 black shadow to pop against the blue water background."
+  },
+  "components": {
+    "StartScreen": "Absolute positioned overlay, fully covering the canvas. Dark semi-transparent background (bg-black/80). Large game title logo text (text-primary with yellow text-shadow). Blinking 'PRESS SPACE TO START' text.",
+    "GameOverScreen": "Absolute overlay, red/black theme. Large 'GAME OVER' text. Display final score and a 'PRESS R TO RESTART' button.",
+    "PauseScreen": "Absolute overlay, bg-black/50, 'PAUSED' text centered.",
+    "HUD": "Top bar displaying: SCORE, LIVES (rendered as mini diver icons or hearts), COINS (yellow circle + number), LEVEL."
+  },
+  "game_mechanics_and_canvas_instructions": {
+    "engine": "Pure HTML5 Canvas + React for UI overlays. Use a standard game loop with requestAnimationFrame inside a useEffect.",
+    "physics": "Underwater float/drift mechanics. Apply a gentle downward gravity. When the user presses UP/SPACE, apply an upward velocity (swim pulse). Horizontal movement (LEFT/RIGHT) should have slight friction/inertia to feel 'watery'.",
+    "entities": {
+      "diver_hero": "Draw a small blocky pixelated diver using fillRect clusters. Colors: hero_diver (#F8D870) and white. Hitbox should be slightly smaller than the visual.",
+      "enemies": "Bloopers (move in diagonal upward pulses, then drift down). Cheep-Cheeps (swim straight horizontally). Urchins (static or slow moving up/down obstacles).",
+      "collectibles": "Coins (yellow pulsing squares/circles). Power-ups: Mushroom equivalent (makes diver larger, +1 health), Star equivalent (temporary invincibility, rainbow flashing colors).",
+      "environment": "Draw simple seaweed stalks at the bottom using success color (#00A800) and some rising bubbles using accent color (#00E8D8) for parallax effect."
+    },
+    "level_progression": "Arcade mode style. As score/time increases, spawn more enemies faster. Track 'Level' linearly based on time survived."
+  },
+  "image_urls": {
+    "retro_controllers": "https://images.pexels.com/photos/8885382/pexels-photo-8885382.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+  },
+  "instructions_to_main_agent": [
+    "1. Setup a React application with Tailwind CSS and the 'Press Start 2P' font loaded from Google Fonts.",
+    "2. Do not use external game engines like Phaser; build the game loop in React using a single <canvas> element and requestAnimationFrame.",
+    "3. Keep all game state (player pos, enemies, coins) in a mutable useRef object rather than React state to avoid re-render performance issues. Only use React state for high-level UI like screens (Start, Playing, Game Over) and Score/Lives updates.",
+    "4. Implement the custom CSS for the CRT scanlines. Put it in your global CSS and apply the class to an overlay div.",
+    "5. Render the sprites programmatically using ctx.fillRect with an 8-bit scale (e.g., 1 game pixel = 4x4 canvas pixels) or use base64 pixel strings.",
+    "6. Do not skip adding `data-testid` to the UI overlays (buttons, screens)."
+  ]
+}
